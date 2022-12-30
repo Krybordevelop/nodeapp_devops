@@ -1,0 +1,38 @@
+---
+- name: Update web servers
+  hosts: webservers
+  remote_user: root
+  tasks:
+  - name: APT Update
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  - name: Install nodeJS and NPM 
+    apt:
+      pkg:
+        - nodejs
+        - npm
+  - name: create new user for nodejs
+    user:
+      name: nodeuser
+      comment: Node User
+      group: admin
+  - name: copy app to user folder
+    ansible.builtin.copy:
+      src: ../myapp/package.json
+      dest: /home/nodeuser/
+      owner: nodeuser
+  - name: copy app to user folder
+    ansible.builtin.copy:
+      src: ../myapp/src
+      dest: /home/nodeuser/
+      owner: nodeuser
+  - name: Install dependencies
+    npm:
+      path: /home/nodeuser/
+    become_user: nodeuser
+  - name: start app
+    command:
+      chdir: /home/nodeuser/src
+      cmd: node app.js
+    become_user: nodeuser
+    async: 1000
+    poll: 0
