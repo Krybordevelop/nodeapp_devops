@@ -8,9 +8,12 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
+      steps {
+        sh 'cd ./myapp'
+        sh 'npm install'
+        sh 'npm -v'
+        sh 'node -v'
+      }
         }
         stage('Deploy') {
             steps {
