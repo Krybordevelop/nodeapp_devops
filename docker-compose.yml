@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    networks:
+      - app_network
+  nginx:
+    build: ./nginx
+    ports:
+    - '80:80'
+    networks:
+      - app_network
+    depends_on:
+    - app
+
+networks:
+  app_network:
