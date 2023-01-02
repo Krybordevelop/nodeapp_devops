@@ -9,10 +9,11 @@ pipeline {
         }
         stage('Test') {
       steps {
-        sh 'cd ./myapp'
-        sh 'npm install'
         sh 'npm -v'
         sh 'node -v'
+        dir('myapp'){
+            sh 'npm install'
+        }
       }
         }
         stage('Deploy') {
