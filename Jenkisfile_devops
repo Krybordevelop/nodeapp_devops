@@ -4,7 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                checkout scm
+                def testImage = docker.build("test-image", "./dockerfiles") 
+
+                 testImage.inside {
+                    sh 'make test'
+                }
             }
         }
         stage('Test') {
