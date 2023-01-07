@@ -7,4 +7,3 @@ COPY myapp .
 RUN npm install
 
 CMD ["npm", "run", "prod"]
-
