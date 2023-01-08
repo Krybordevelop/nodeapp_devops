@@ -1,26 +1,10 @@
 pipeline {
     agent {label 'docker'}
+    stage('Docker build') {
+        agent any
+        steps {
+            sh 'docker build -t testbuild .'
+        }
 
-    stages {
-        stage('Build') {
-            steps {
-                checkout scm
-                def testImage = docker.build("test-image", "./dockerfiles") 
-
-                 testImage.inside {
-                    sh 'make test'
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-            sh 'docker -v'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
     }
 }
